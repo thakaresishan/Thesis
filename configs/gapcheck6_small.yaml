@@ -1,0 +1,39 @@
+# Same six domains at the SOURCE SIZE USED BY THE CLASSIC LITERATURE (~2k).
+# the main grid will use. Run this and its _small twin, then pick the four
+# domains with the widest and most varied gap spread.
+#
+# Requires: python scripts/prepare_amazon.py --domains books movies music electronics kitchen clothing --per-class 12500
+name: gapcheck6_small
+output_dir: results
+
+data:
+  loader: files
+  data_dir: data
+  domains: [books, movies, music, electronics, kitchen, clothing]
+  n_train: 2000
+  n_val: 1500
+  n_test: 2500
+  balanced: true
+
+features:
+  ngram_min: 1
+  ngram_max: 2
+  min_df: 2
+  max_features: 50000
+  fit_on: source_plus_unlabeled_target
+
+models:
+  classifiers: [logreg]
+  C_grid: [0.1, 1.0, 10.0]
+  class_weight: balanced
+
+protocol:
+  budgets: [0]
+  strategies: [random]
+  seeds: [0]
+  tuning: budget_cv
+  cv_folds: 3
+  cold_start_n: 0
+  st_selection: quantile
+  st_top_fraction: 0.2
+  st_max_iters: 3

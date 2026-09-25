@@ -1,0 +1,42 @@
+# Pilot gate on REAL data (weeks 5-6). This is the run that decides whether the
+# thesis has room to operate. Looking for a k=0 gap of at least ~3 macro-F1
+# points, ideally 8-15. If the gap is smaller, swap in more distant domain pairs
+# BEFORE running the main grid.
+name: pilot_real
+output_dir: results
+
+data:
+  loader: files
+  data_dir: data
+  domains: [books, electronics]
+  n_train: 2000
+  n_val: 500
+  n_test: 800
+  balanced: true
+
+features:
+  ngram_min: 1
+  ngram_max: 2
+  min_df: 2
+  max_features: 30000
+  fit_on: source_plus_unlabeled_target
+
+models:
+  classifiers: [logreg]
+  C_grid: [0.1, 1.0, 10.0]
+  class_weight: balanced
+
+protocol:
+  budgets: [0, 50, 100, 250, 500]
+  strategies: [random, uncertainty, self_training]
+  seeds: [0, 1, 2]
+  tuning: budget_cv
+  cv_folds: 3
+  val_fraction_of_budget: 0.2
+  min_val_size: 20
+  cold_start_n: 25
+  acquisition_batch: 25
+  st_selection: quantile
+  st_top_fraction: 0.2
+  st_threshold: 0.9
+  st_max_iters: 3

@@ -1,0 +1,41 @@
+# Fast domain-selection check. Computes ONLY the RQ1 transfer matrix: k=0
+# baselines plus ceilings, for all 12 ordered pairs. Two minutes, not five hours.
+#
+# Purpose: decide which four domains to commit to BEFORE launching the main
+# grid. A pair with a gap under ~4 macro-F1 points has no room for a recovery
+# curve to be interesting, and finding that out here costs minutes.
+name: gapcheck
+output_dir: results
+
+data:
+  loader: files
+  data_dir: data
+  domains: [books, electronics, kitchen, clothing]
+  n_train: 8000
+  n_val: 1500
+  n_test: 2500
+  balanced: true
+
+features:
+  ngram_min: 1
+  ngram_max: 2
+  min_df: 2
+  max_features: 50000
+  fit_on: source_plus_unlabeled_target
+
+models:
+  classifiers: [logreg]
+  C_grid: [0.1, 1.0, 10.0]
+  class_weight: balanced
+
+protocol:
+  budgets: [0]            # k=0 only: S and T are all this config produces
+  strategies: [random]
+  seeds: [0]
+  tuning: budget_cv
+  cv_folds: 3
+  cold_start_n: 0
+  acquisition_batch: 25
+  st_selection: quantile
+  st_top_fraction: 0.2
+  st_max_iters: 3

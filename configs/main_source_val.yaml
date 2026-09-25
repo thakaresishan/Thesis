@@ -1,0 +1,64 @@
+# Main grid (weeks 7-9). Every choice below is backed by a gap-check run.
+#
+# DOMAINS. Selected from six candidates by scripts/compare_gaps.py. The gap
+# check showed two tight clusters - media (books, movies, music) and physical
+# goods (electronics, kitchen, clothing) - with within-cluster gaps of 0.007 to
+# 0.048 and cross-cluster gaps up to 0.117. A workable set therefore needs two
+# domains from each cluster. This subset ranked first at n_train=2000: 9 of 12
+# ordered pairs at or above 0.05, median 0.075, minimum 0.034, no near-zero or
+# negative pairs. Report the selection table in the methodology chapter; the
+# choice was made on evidence, which is worth saying out loud.
+#
+# SOURCE SIZE. 2000, not 8000. Two reasons, both defensible:
+#   1. It matches the scale of the benchmarks the thesis cites (Blitzer et al.
+#      used ~1600 labelled reviews per domain).
+#   2. Annotation budget is only an interesting question when labels are scarce.
+#      A practitioner with 8000 source labels is not agonising over 250 more.
+#   The gapcheck6 vs gapcheck6_small comparison quantifies what this costs:
+#   28 of 30 pairs had larger gaps at 2000 than at 8000 (mean 0.064 vs 0.050).
+#
+# BUDGETS. The real-data pilot reached only ~0.70 recovery at k=500, so the
+# range extends to the full pool rather than stopping early. k=2000 doubles as
+# a correctness check: target_only at k = n_train should land very close to the
+# ceiling T, since both then train on the entire target pool. They will not be
+# identical - the ceiling tunes on the target's own validation split while
+# budget runs tune by CV over the budget - but a large divergence means a bug.
+name: main_source_val
+output_dir: results
+
+data:
+  loader: files
+  data_dir: data
+  domains: [books, music, electronics, clothing]
+  n_train: 2000
+  n_val: 1500
+  n_test: 2500            # large test set: the gaps are small, so precision matters
+  balanced: true
+
+features:
+  ngram_min: 1
+  ngram_max: 2
+  min_df: 2
+  max_features: 50000
+  fit_on: source_plus_unlabeled_target
+
+models:
+  classifiers: [logreg, svm]
+  C_grid: [0.01, 0.1, 1.0, 10.0]
+  class_weight: balanced
+
+protocol:
+  budgets: [0, 50, 100, 250, 500, 1000, 2000]
+  strategies: [random, uncertainty, self_training]
+  seeds: [0, 1, 2, 3, 4]
+  tuning: source_val
+  cv_folds: 3
+  val_fraction_of_budget: 0.0
+  min_val_size: 20
+  cold_start_n: 25
+  acquisition_batch: 50
+  st_selection: quantile
+  st_top_fraction: 0.2
+  st_threshold: 0.9
+  st_max_iters: 3
+  st_unlabeled_pool: 5000
