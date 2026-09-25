@@ -1,0 +1,26 @@
+# Environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+
+# Editor
+.vscode/
+
+# Corpora: Amazon Reviews 2023 (McAuley Lab), rebuilt per data/README.md
+data/*.jsonl
+data/*.csv
+data/*.tsv
+data/*.json
+!data/README.md
+!data/prep_report.json
+
+# Results are committed: the grid takes hours, and analysis and figures
+# regenerate from the committed results CSVs without the corpora.
+
+# OS
+.DS_Store
+Thumbs.db
