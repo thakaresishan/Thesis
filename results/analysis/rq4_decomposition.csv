@@ -1,0 +1,5 @@
+domain,mean_gap_as_source,mean_gap_as_target,source_effect,target_effect
+music,0.1096,0.0633,0.0298,-0.0164
+clothing,0.0811,0.0748,0.0013,-0.005
+electronics,0.0657,0.0891,-0.014,0.0094
+books,0.0627,0.0918,-0.0171,0.012

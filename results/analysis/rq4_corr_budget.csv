@@ -1,0 +1,5 @@
+measure,symmetric,n,spearman,p_spearman,pearson,ci_lo,ci_hi,note
+coverage,False,10,-0.43,0.2145,-0.401,-0.823,0.306,
+oov_rate,False,10,0.321,0.3655,0.334,-0.375,0.796,
+js_divergence,True,10,0.117,0.7484,0.161,-0.521,0.718,
+a_distance,True,10,-0.055,0.881,0.18,-0.507,0.727,
