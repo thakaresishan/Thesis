@@ -1,0 +1,64 @@
+{
+  "settings": {
+    "domains": [
+      "movies",
+      "music"
+    ],
+    "category": [],
+    "per_class": 12500,
+    "seed": 0,
+    "max_stream": 1500000,
+    "min_words": 5,
+    "max_chars": 5000,
+    "no_title": false,
+    "verified_only": false,
+    "local_file": null,
+    "progress_every": 25000,
+    "out_dir": "data",
+    "dry_run": false,
+    "repo": "McAuley-Lab/Amazon-Reviews-2023",
+    "base_url": "https://huggingface.co/datasets/McAuley-Lab/Amazon-Reviews-2023/resolve/main/raw/review_categories"
+  },
+  "domains": [
+    {
+      "domain": "movies",
+      "category": "Movies_and_TV",
+      "requested_per_class": 12500,
+      "n_negative": 12500,
+      "n_positive": 12500,
+      "n_total": 25000,
+      "streamed": 124946,
+      "dropped_neutral_or_bad_rating": 10740,
+      "dropped_too_short": 12772,
+      "dropped_duplicate": 2862,
+      "dropped_unverified": 0,
+      "truncated": 286,
+      "quota_met": true,
+      "hit_stream_cap": false,
+      "words_median": 32,
+      "words_p10": 8,
+      "words_p90": 142,
+      "seconds": 12.2
+    },
+    {
+      "domain": "music",
+      "category": "CDs_and_Vinyl",
+      "requested_per_class": 12500,
+      "n_negative": 12500,
+      "n_positive": 12500,
+      "n_total": 25000,
+      "streamed": 249421,
+      "dropped_neutral_or_bad_rating": 14214,
+      "dropped_too_short": 29712,
+      "dropped_duplicate": 8771,
+      "dropped_unverified": 0,
+      "truncated": 359,
+      "quota_met": true,
+      "hit_stream_cap": false,
+      "words_median": 35,
+      "words_p10": 9,
+      "words_p90": 160,
+      "seconds": 24.4
+    }
+  ]
+}
